@@ -1,7 +1,7 @@
 internations_users:
-    resource: "@InternationsUsersBundle/Controller/"
+    resource: "@InternationsUsersBundle/Controller/UserController.php"
     type:     annotation
-    prefix:   /
+    prefix:   /api
 
 app:
     resource: '@AppBundle/Controller/'
