@@ -1,0 +1,4 @@
+services:
+#    internations_users.example:
+#        class: Internations\UsersBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

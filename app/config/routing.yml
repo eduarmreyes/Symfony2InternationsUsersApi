@@ -1,0 +1,8 @@
+internations_users:
+    resource: "@InternationsUsersBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
