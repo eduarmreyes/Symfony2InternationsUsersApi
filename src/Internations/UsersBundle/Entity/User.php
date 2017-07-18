@@ -3,12 +3,13 @@
 namespace Internations\UsersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="Rootstack\TaskBundle\Repository\UserRepository")
+ * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="Internations\UsersBundle\Repository\UserRepository")
  */
 
 class User
@@ -39,7 +40,7 @@ class User
 	/**
 	 * @var created_by
 	 *
-	 * @ORM\Column(name="created_by", type="integer")
+	 * @ORM\Column(name="created_by", type="integer", nullable=true)
 	 */
 	private $created_by;
 
@@ -53,7 +54,7 @@ class User
 	/**
 	 * @var updated_by
 	 *
-	 * @ORM\Column(name="updated_by", type="integer")
+	 * @ORM\Column(name="updated_by", type="integer", nullable=true)
 	 */
 	private $updated_by;
 
@@ -71,10 +72,19 @@ class User
 	 */
 	private $type;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Groups", mappedBy="users")
+	 */
+	private $groups;
+
+
 	public function __construct()
 	{
-		$this->created_at(new \DateTime());
-		$this->updated_at(new \DateTime());
+		$this->created_at = new \DateTime();
+		$this->updated_at = new \DateTime();
+
+		$this->groups = new ArrayCollection();
+
 	}
 
 	/**
@@ -246,6 +256,17 @@ class User
 		$this->type = $type;
 
 		return $this;
+	}
+
+	/**
+	 * Get groups
+	 *
+	 * @param Group groups
+	 * return User
+	 */
+	public function getGroups()
+	{
+		return $this->groups;
 	}
 
 }

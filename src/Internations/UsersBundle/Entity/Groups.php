@@ -3,15 +3,16 @@
 namespace Internations\UsersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Group
+ * Groups
  *
- * @ORM\Table(name="group")
- * @ORM\Entity(repositoryClass="Rootstack\TaskBundle\Repository\GroupRepository")
+ * @ORM\Table(name="groups")
+ * @ORM\Entity(repositoryClass="Internations\UsersBundle\Repository\GroupsRepository")
  */
 
-class Group
+class Groups
 {
 	/**
 	 * @var int
@@ -35,7 +36,7 @@ class Group
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="groups")
 	 * @ORM\JoinColumn(name="usr_id", referencedColumnName="id")
 	 */
-	private $user;
+	private $users;
 
 	/**
 	 * @var created_by
@@ -69,6 +70,8 @@ class Group
 	{
 		$this->created_at(new \DateTime());
 		$this->updated_at(new \DateTime());
+
+		$this->users = new ArrayCollection();
 	}
 
 	/**
@@ -105,26 +108,26 @@ class Group
 	}
 
 	/**
-	 * Set usr_id
+	 * Set Users
 	 *
 	 * @param User user
 	 * return Group
 	 */
 	public function setUser($user)
 	{
-		$this->usr_id = $user->id;
+		$this->users = $user;
 
 		return $this;
 	}
 
 	/**
-	 * Get usr_id
+	 * Get Users
 	 *
-	 * return integer
+	 * return Users
 	 */
-	public function getUserId()
+	public function getUsers()
 	{
-		return $this->usr_id;
+		return $this->users;
 	}
 
 	/**

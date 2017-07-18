@@ -1,6 +1,6 @@
 internations_users:
     resource: "@InternationsUsersBundle/Controller/UserController.php"
-    type:     annotation
+    type:     rest
     prefix:   /api
 
 app:
