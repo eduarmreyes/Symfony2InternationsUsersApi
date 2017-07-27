@@ -31,10 +31,15 @@ class Groups
 	private $name;
 
 	/**
-	 * @var user
+	 * @var status
 	 *
-	 * @ORM\ManyToOne(targetEntity="User", inversedBy="groups")
-	 * @ORM\JoinColumn(name="usr_id", referencedColumnName="id")
+	 * @ORM\Column(name="status", type="integer")
+	 */
+	private $status;
+
+	/**
+	 * Many Groups have Many Users.
+	 * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
 	 */
 	private $users;
 
@@ -68,8 +73,8 @@ class Groups
 
 	public function __construct()
 	{
-		$this->created_at(new \DateTime());
-		$this->updated_at(new \DateTime());
+		$this->created_at = new \DateTime();
+		$this->updated_at = new \DateTime();
 
 		$this->users = new ArrayCollection();
 	}
@@ -105,6 +110,29 @@ class Groups
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Set status
+	 *
+	 * @param string status
+	 * return User
+	 */
+	public function setStatus($status)
+	{
+		$this->status = $status;
+
+		return $this;
+	}
+
+	/**
+	 * Get status
+	 *
+	 * return string
+	 */
+	public function getStatus()
+	{
+		return $this->status;
 	}
 
 	/**

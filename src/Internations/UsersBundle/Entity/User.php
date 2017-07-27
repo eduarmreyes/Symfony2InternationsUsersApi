@@ -73,10 +73,11 @@ class User
 	private $type;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Groups", mappedBy="users")
+	 * Many Users have Many Groups.
+	 * @ORM\ManyToMany(targetEntity="Groups", inversedBy="users")
+	 * @ORM\JoinTable(name="users_groups")
 	 */
 	private $groups;
-
 
 	public function __construct()
 	{

@@ -30,10 +30,13 @@ class UserController extends FOSRestController
      */
     public function getUsersAction(){
 
-      $users = $this->getDoctrine()->getRepository("InternationsUsersBundle:User")
-      	->findAll();
+    	$userRepository = $this->getDoctrine()->getRepository("InternationsUsersBundle:User");
 
-      return array('user' => $users);
+      $users = $userRepository->createQueryBuilder("u")
+      	->where("u.status = 1")
+      	->getQuery();
+
+      return array('user' => $users->getResult());
     }
 
     /**
@@ -77,4 +80,83 @@ class UserController extends FOSRestController
 				'form' => $form,
       );
     }
+
+    /**
+     * Delete an existing User by ID
+     * Delete action
+     * @param User $user
+     * @return array
+     *
+     * @View()
+     * @ParamConverter("user", class="InternationsUsersBundle:User")
+     * @Delete("/user/{id}",)
+     */
+
+    public function deleteUserAction(User $user)
+    {
+  		$em = $this->getDoctrine()->getManager();
+  		$em->getConnection()->beginTransaction();
+    	try {
+
+    		$user->setStatus(0);
+
+    		$em->persist($user);
+    		$em->flush();
+
+    		$em->getConnection()->commit();
+
+    		return array("status" => "Deleted", "user" => $user);
+
+    	} catch (Exception $e) {
+				$em->getConnection()->rollback();
+    		return array("status" => 0, "error_message" => $e->getMessage());
+    	}
+    }
+
+  /**
+  * Get all the Groups
+   * @return array
+   *
+   * @View()
+   * @Get("/groups")
+   */
+  public function getGroupsAction(){
+
+    $groupRepository = $this->getDoctrine()->getRepository("InternationsUsersBundle:Groups");
+
+    $groups = $groupRepository->createQueryBuilder("g")
+      ->where("g.status = 1")
+      ->getQuery();
+
+    return array('groups' => $groups->getResult());
+  }
+
+  /**
+   * Create a new Group
+   * @var Request $request
+   * @return View|array
+   *
+   * @View()
+   * @Post("/group")
+   */
+  public function postGroupAction(Request $request)
+  {
+    $group = new Groups();
+
+    $form = $this->createForm(new GroupsType(), $group);
+    $form->handleRequest($request);
+
+    if ($form->isValid()) {
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($group);
+      $em->flush();
+
+      return array("group" => $group);
+    }
+
+    return array(
+			'form' => $form,
+    );
+  }
+
 }
